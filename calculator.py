@@ -18,19 +18,6 @@ PHASE_2_LEVELS_PER_PAGE = 5
 PHASE_3_LEVELS_PER_PAGE = 5
 
 
-def calculate_total_xp(current_level, current_xp_progress=0):
-    current_level = current_level - 1 # `current_level` is in progress
-    if current_level <= PHASE_1_MAX_BP_LEVEL:
-        current_total_xp = MIN_XP
-        for level in range(MIN_BP_LEVEL,current_level):
-            current_total_xp = current_total_xp + ((level / PHASE_1_LEVELS_PER_PAGE) * PHASE_1_XP_DELTA) + PHASE_1_BASE_XP
-        return current_total_xp + current_xp_progress
-    if current_level <= PHASE_2_MAX_BP_LEVEL:
-        return PHASE_1_TOTAL_XP + ((PHASE_2_MAX_BP_LEVEL - current_level) * PHASE_2_MAX_XP) + current_xp_progress
-    if current_level <= PHASE_3_MAX_BP_LEVEL:
-        return PHASE_2_TOTAL_XP + ((PHASE_3_MAX_BP_LEVEL - current_level) * 100000) + current_xp_progress
-    
-
 def validate_xp_value(xp, current_level):
     if not xp.isdigit():
         return False
@@ -53,6 +40,33 @@ def validate_level_value(level, current_level=None):
     if current_level is not None and int(level) < current_level:
         return False
     return True
+
+
+def calculate_total_xp(current_level, current_xp_progress=0):
+    current_level = current_level - 1 # `current_level` is in progress
+    if current_level <= PHASE_1_MAX_BP_LEVEL:
+        current_total_xp = MIN_XP
+        for level in range(MIN_BP_LEVEL,current_level):
+            current_total_xp = current_total_xp + ((level / PHASE_1_LEVELS_PER_PAGE) * PHASE_1_XP_DELTA) + PHASE_1_BASE_XP
+        return current_total_xp + current_xp_progress
+    if current_level <= PHASE_2_MAX_BP_LEVEL:
+        return PHASE_1_TOTAL_XP + ((PHASE_2_MAX_BP_LEVEL - current_level) * PHASE_2_MAX_XP) + current_xp_progress
+    if current_level <= PHASE_3_MAX_BP_LEVEL:
+        return PHASE_2_TOTAL_XP + ((PHASE_3_MAX_BP_LEVEL - current_level) * 100000) + current_xp_progress
+    
+
+def print_report(current_level, current_xp, goal_level=None):
+    current_total_xp = calculate_total_xp(current_level, current_xp)
+    print(f"Total XP for level {current_level} at {current_xp} XP: {current_total_xp}")
+    if goal_level != None:
+        goal_level_total_xp = calculate_total_xp(goal_level + 1) # add 1 so `goal_level` xp progress is complete
+        print(f"Total XP to complete level {goal_level} XP: {goal_level_total_xp}")
+        print(f"XP to complete level {goal_level}: {goal_level_total_xp - current_total_xp}")
+        return
+    else:
+        print(f"Total XP to complete level {PHASE_1_MAX_BP_LEVEL} ({PHASE_1_TOTAL_XP} XP): {PHASE_1_TOTAL_XP - current_total_xp}")
+        print(f"Total XP to complete level {PHASE_2_MAX_BP_LEVEL} ({PHASE_2_TOTAL_XP} XP): {PHASE_2_TOTAL_XP - current_total_xp}")
+        print(f"Total XP to complete level {PHASE_3_MAX_BP_LEVEL} ({PHASE_3_TOTAL_XP} XP): {PHASE_3_TOTAL_XP - current_total_xp}")
 
 
 def main():
@@ -82,20 +96,6 @@ def main():
             break
         print("invalid battle pass level")
     print_report(current_level, current_xp, goal_level)
-
-
-def print_report(current_level, current_xp, goal_level=None):
-    current_total_xp = calculate_total_xp(current_level, current_xp)
-    print(f"Total XP for level {current_level} at {current_xp} XP: {current_total_xp}")
-    if goal_level != None:
-        goal_level_total_xp = calculate_total_xp(goal_level + 1) # add 1 so `goal_level` xp progress is complete
-        print(f"Total XP to complete level {goal_level} XP: {goal_level_total_xp}")
-        print(f"XP to complete level {goal_level}: {goal_level_total_xp - current_total_xp}")
-        return
-    else:
-        print(f"Total XP to complete level {PHASE_1_MAX_BP_LEVEL} ({PHASE_1_TOTAL_XP} XP): {PHASE_1_TOTAL_XP - current_total_xp}")
-        print(f"Total XP to complete level {PHASE_2_MAX_BP_LEVEL} ({PHASE_2_TOTAL_XP} XP): {PHASE_2_TOTAL_XP - current_total_xp}")
-        print(f"Total XP to complete level {PHASE_3_MAX_BP_LEVEL} ({PHASE_3_TOTAL_XP} XP): {PHASE_3_TOTAL_XP - current_total_xp}")
 
 
 if __name__ == "__main__":
