@@ -1,4 +1,20 @@
 // === CONFIGURATION ===
+const PHASE_1_TOTAL_XP = 1104000
+const PHASE_2_TOTAL_XP = 1354000
+const PHASE_3_TOTAL_XP = 1854000
+const MIN_BP_LEVEL = 1
+const PHASE_1_MAX_BP_LEVEL = 96
+const PHASE_2_MAX_BP_LEVEL = 101
+const PHASE_3_MAX_BP_LEVEL = 106
+const MIN_XP = 0
+const PHASE_2_MAX_XP = 50000
+const PHASE_3_MAX_XP = 100000
+const PHASE_1_BASE_XP = 6000
+const PHASE_1_XP_DELTA = 1000
+const PHASE_1_LEVELS_PER_PAGE = 8
+const PHASE_2_LEVELS_PER_PAGE = 5
+const PHASE_3_LEVELS_PER_PAGE = 5
+
 const XP_PER_LEVEL = 1000; // Change if needed later
 
 // === Grab DOM Elements ===
@@ -7,9 +23,9 @@ const currentXpInput = document.getElementById("currentXp");
 const goalLevelInput = document.getElementById("goalLevel");
 
 const goalXpBox = document.getElementById("goalXp");
-const lvl96Box = document.getElementById("lvl96");
-const lvl101Box = document.getElementById("lvl101");
-const lvl106Box = document.getElementById("lvl106");
+const phase1Results = document.getElementById("phase1Results");
+const phase2Results = document.getElementById("phase2Results");
+const phase3Results = document.getElementById("phase3Results");
 
 // === Validate Inputs ===
 function validateInputs() {
@@ -18,20 +34,22 @@ function validateInputs() {
   // Validate current level
   if (
     currentLevelInput.value === "" ||
-    currentLevelInput.value < 1 ||
-    currentLevelInput.value > 106
+    currentLevelInput.value < MIN_BP_LEVEL ||
+    currentLevelInput.value > PHASE_3_MAX_BP_LEVEL
   ) {
     currentLevelInput.classList.add("invalid");
     valid = false;
   } else {
     currentLevelInput.classList.remove("invalid");
   }
+ 
+  let maxXP = getPhaseMaxXP(currentLevelInput.value)
 
   // Validate current XP
   if (
     currentXpInput.value === "" ||
-    currentXpInput.value < 0 ||
-    currentXpInput.value > XP_PER_LEVEL
+    currentXpInput.value < MIN_XP ||
+    currentXpInput.value > maxXP
   ) {
     currentXpInput.classList.add("invalid");
     valid = false;
@@ -42,7 +60,7 @@ function validateInputs() {
   // Validate goal level
   if (
     goalLevelInput.value === "" ||
-    goalLevelInput.value < 1 ||
+    goalLevelInput.value < currentLevelInput.value ||
     goalLevelInput.value > 106
   ) {
     goalLevelInput.classList.add("invalid");
@@ -52,6 +70,16 @@ function validateInputs() {
   }
 
   return valid;
+}
+
+function getPhaseMaxXP(level) {
+     if (level > PHASE_2_MAX_BP_LEVEL) {
+        return PHASE_3_MAX_XP;
+    }
+    if (level > PHASE_1_MAX_BP_LEVEL) {
+        return PHASE_2_MAX_XP;
+    }
+    return (Math.floor((level - 1) / PHASE_1_LEVELS_PER_PAGE) * PHASE_1_XP_DELTA) + PHASE_1_BASE_XP;
 }
 
 // === Calculate XP Needed ===
