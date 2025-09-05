@@ -1,18 +1,28 @@
 /* === General Page Styling === */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Saira Extra Condensed", sans-serif;
+  font-weight: 800;
+  font-style: normal;
   max-width: 600px;
   margin: 40px auto;
   padding: 20px;
-  background: #f5f5f5;
-  color: #222;
+  background: #ce2c30;
+  color: #ffecec;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  font-size: 1.8rem;
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 20px;
+  margin: 0;
+  font-size: 8rem;
+  max-height: 165px;
+}
+
+h2 {
+    text-align: center;
+    margin: 0;
 }
 
 label {
@@ -20,14 +30,27 @@ label {
 }
 
 /* === Input Fields === */
-input {
-  width: 100%;
-  padding: 8px;
-  margin: 6px 0 16px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+.input-box {
+  display: flex;
+  align-items: center;
+  color: #511921;
+  padding: 10px;
+  margin-top: 8px;
+  font-size: 1.4rem;
+  background: #f7bb28;
+  border-radius: 8px;
   transition: border-color 0.2s ease, background-color 0.2s ease;
+  gap: 10px;
+}
+
+.input-box input {
+  flex: 1;
+  box-sizing: border-box;
+  font-family: "Saira Extra Condensed", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 1.1rem;
+  border-radius: 8px;
 }
 
 input.invalid {
@@ -37,11 +60,14 @@ input.invalid {
 
 /* === Result Boxes === */
 .result-box {
-  background: #fff;
   padding: 10px;
   margin-top: 8px;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  color: #ffecec;
+  background: #511921;
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
+  font-family: "Saira Extra Condensed", sans-serif;
+  font-weight: 800;
+  font-style: normal;
 }
