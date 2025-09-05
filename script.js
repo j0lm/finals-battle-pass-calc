@@ -15,8 +15,6 @@ const PHASE_1_LEVELS_PER_PAGE = 8;
 const PHASE_2_LEVELS_PER_PAGE = 5;
 const PHASE_3_LEVELS_PER_PAGE = 5;
 
-const XP_PER_LEVEL = 1000; // Change if needed later
-
 // === Grab DOM Elements ===
 const currentLevelInput = document.getElementById("currentLevel");
 const currentXpInput = document.getElementById("currentXp");
