@@ -43,7 +43,7 @@ function validateInputs() {
     currentLevelInput.classList.remove("invalid");
   }
 
-  let maxXP = getPhaseMaxXP(currentLevelInput.value);
+  let maxXP = getPhaseMaxXP(parseInt(currentLevelInput.value));
 
   // Validate current XP
   if (
@@ -60,7 +60,7 @@ function validateInputs() {
   // Validate goal level
   if (
     goalLevelInput.value === "" ||
-    parseInt(goalLevelInput.value) < currentLevelInput.value ||
+    parseInt(goalLevelInput.value) < parseInt(currentLevelInput.value) ||
     parseInt(goalLevelInput.value) > PHASE_3_MAX_BP_LEVEL
   ) {
     goalLevelInput.classList.add("invalid");
@@ -114,9 +114,9 @@ function calculateTotalXp(currentLevel, currentXp = MIN_XP) {
 
 function getResultString(xpNeeded) {
   if (parseInt(xpNeeded) < MIN_XP) {
-    return "This level is complete";
+    return `This level is complete`;
   } else {
-    return xpNeeded.toLocalString();
+    return xpNeeded.toLocaleString();
   }
 }
 
