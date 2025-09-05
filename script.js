@@ -92,7 +92,7 @@ function calculateXpNeeded(targetLevel) {
 
   let currentTotalXp = calculateTotalXp(currentLevel, currentXp);
   let goalTotalXp = calculateTotalXp(targetLevel);
-  return Math.max(goalTotalXp - currentTotalXp);
+  return Math.max(0, goalTotalXp - currentTotalXp);
 }
 
 function calculateTotalXp(currentLevel, currentXp = 0) {
