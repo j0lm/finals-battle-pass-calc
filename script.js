@@ -1,19 +1,19 @@
 // === CONFIGURATION ===
-const PHASE_1_TOTAL_XP = 1104000
-const PHASE_2_TOTAL_XP = 1354000
-const PHASE_3_TOTAL_XP = 1854000
-const MIN_BP_LEVEL = 1
-const PHASE_1_MAX_BP_LEVEL = 96
-const PHASE_2_MAX_BP_LEVEL = 101
-const PHASE_3_MAX_BP_LEVEL = 106
-const MIN_XP = 0
-const PHASE_2_MAX_XP = 50000
-const PHASE_3_MAX_XP = 100000
-const PHASE_1_BASE_XP = 6000
-const PHASE_1_XP_DELTA = 1000
-const PHASE_1_LEVELS_PER_PAGE = 8
-const PHASE_2_LEVELS_PER_PAGE = 5
-const PHASE_3_LEVELS_PER_PAGE = 5
+const PHASE_1_TOTAL_XP = 1104000;
+const PHASE_2_TOTAL_XP = 1354000;
+const PHASE_3_TOTAL_XP = 1854000;
+const MIN_BP_LEVEL = 1;
+const PHASE_1_MAX_BP_LEVEL = 96;
+const PHASE_2_MAX_BP_LEVEL = 101;
+const PHASE_3_MAX_BP_LEVEL = 106;
+const MIN_XP = 0;
+const PHASE_2_MAX_XP = 50000;
+const PHASE_3_MAX_XP = 100000;
+const PHASE_1_BASE_XP = 6000;
+const PHASE_1_XP_DELTA = 1000;
+const PHASE_1_LEVELS_PER_PAGE = 8;
+const PHASE_2_LEVELS_PER_PAGE = 5;
+const PHASE_3_LEVELS_PER_PAGE = 5;
 
 const XP_PER_LEVEL = 1000; // Change if needed later
 
@@ -42,14 +42,14 @@ function validateInputs() {
   } else {
     currentLevelInput.classList.remove("invalid");
   }
- 
-  let maxXP = getPhaseMaxXP(currentLevelInput.value)
+
+  let maxXP = getPhaseMaxXP(currentLevelInput.value);
 
   // Validate current XP
   if (
     currentXpInput.value === "" ||
-    currentXpInput.value < MIN_XP ||
-    currentXpInput.value > maxXP
+    parseInt(currentXpInput.value) < MIN_XP ||
+    parseInt(currentXpInput.value) > maxXP
   ) {
     currentXpInput.classList.add("invalid");
     valid = false;
@@ -60,8 +60,8 @@ function validateInputs() {
   // Validate goal level
   if (
     goalLevelInput.value === "" ||
-    goalLevelInput.value < currentLevelInput.value ||
-    goalLevelInput.value > 106
+    parseInt(goalLevelInput.value) < currentLevelInput.value ||
+    parseInt(goalLevelInput.value) > PHASE_3_MAX_BP_LEVEL
   ) {
     goalLevelInput.classList.add("invalid");
     valid = false;
@@ -73,13 +73,16 @@ function validateInputs() {
 }
 
 function getPhaseMaxXP(level) {
-     if (level > PHASE_2_MAX_BP_LEVEL) {
-        return PHASE_3_MAX_XP;
-    }
-    if (level > PHASE_1_MAX_BP_LEVEL) {
-        return PHASE_2_MAX_XP;
-    }
-    return (Math.floor((level - 1) / PHASE_1_LEVELS_PER_PAGE) * PHASE_1_XP_DELTA) + PHASE_1_BASE_XP;
+  if (level > PHASE_2_MAX_BP_LEVEL) {
+    return PHASE_3_MAX_XP;
+  }
+  if (level > PHASE_1_MAX_BP_LEVEL) {
+    return PHASE_2_MAX_XP;
+  }
+  return (
+    Math.floor((level - 1) / PHASE_1_LEVELS_PER_PAGE) * PHASE_1_XP_DELTA +
+    PHASE_1_BASE_XP
+  );
 }
 
 // === Calculate XP Needed ===
@@ -87,40 +90,57 @@ function calculateXpNeeded(targetLevel) {
   const currentLevel = parseInt(currentLevelInput.value) || 0;
   const currentXp = parseInt(currentXpInput.value) || 0;
 
-  let totalXpNeeded = 0;
+  let currentTotalXp = calculateTotalXp(currentLevel, currentXp);
+  let goalTotalXp = calculateTotalXp(targetLevel);
+  return Math.max(goalTotalXp - currentTotalXp);
+}
 
-  if (targetLevel > currentLevel) {
-    const levelsRemaining = targetLevel - currentLevel - 1;
-    totalXpNeeded = (levelsRemaining * XP_PER_LEVEL) + (XP_PER_LEVEL - currentXp);
-  } else if (targetLevel === currentLevel) {
-    totalXpNeeded = XP_PER_LEVEL - currentXp;
-  } else {
-    totalXpNeeded = 0;
+function calculateTotalXp(currentLevel, currentXp = 0) {
+  const completeLevels = currentLevel - 1;
+
+  if (completeLevels <= PHASE_1_MAX_BP_LEVEL) {
+    let currentTotalXp = MIN_XP;
+    for (let level = MIN_BP_LEVEL; level < currentLevel; level++) {
+      currentTotalXp = currentTotalXp + ((Math.floor((level - 1) / PHASE_1_LEVELS_PER_PAGE)) * PHASE_1_XP_DELTA) + PHASE_1_BASE_XP;
+    }
+    return parseInt(currentTotalXp + currentXp);
   }
-
-  return Math.max(0, totalXpNeeded);
+  if (completeLevels <= PHASE_2_MAX_BP_LEVEL) {
+    return parseInt(PHASE_1_TOTAL_XP + ((completeLevels - PHASE_1_MAX_BP_LEVEL) * PHASE_2_MAX_XP) + currentXp);
+  }
+  if (completeLevels <= PHASE_3_MAX_BP_LEVEL) {
+    return parseInt(PHASE_2_TOTAL_XP + ((completeLevels - PHASE_2_MAX_BP_LEVEL) * PHASE_3_MAX_XP) + currentXp);
+  }
 }
 
 // === Update Display Instantly ===
 function updateDisplay() {
   if (!validateInputs()) {
     goalXpBox.textContent = `XP needed for Goal Level: -`;
-    lvl96Box.textContent = `XP needed for Level 96: -`;
-    lvl101Box.textContent = `XP needed for Level 101: -`;
-    lvl106Box.textContent = `XP needed for Level 106: -`;
+    phase1Results.textContent = `XP needed for Level 96: -`;
+    phase2Results.textContent = `XP needed for Level 101: -`;
+    phase3Results.textContent = `XP needed for Level 106: -`;
     return;
   }
 
   const goalLevel = parseInt(goalLevelInput.value) || 106;
 
-  goalXpBox.textContent = `XP needed for Goal Level: ${calculateXpNeeded(goalLevel).toLocaleString()}`;
-  lvl96Box.textContent = `XP needed for Level 96: ${calculateXpNeeded(96).toLocaleString()}`;
-  lvl101Box.textContent = `XP needed for Level 101: ${calculateXpNeeded(101).toLocaleString()}`;
-  lvl106Box.textContent = `XP needed for Level 106: ${calculateXpNeeded(106).toLocaleString()}`;
+  goalXpBox.textContent = `XP needed for Goal Level: ${calculateXpNeeded(
+    goalLevel + 1
+  ).toLocaleString()}`;
+  phase1Results.textContent = `XP needed for Level 96: ${calculateXpNeeded(
+    96 + 1
+  ).toLocaleString()}`;
+  phase2Results.textContent = `XP needed for Level 101: ${calculateXpNeeded(
+    101 + 1
+  ).toLocaleString()}`;
+  phase3Results.textContent = `XP needed for Level 106: ${calculateXpNeeded(
+    106 + 1
+  ).toLocaleString()}`;
 }
 
 // === Event Listeners ===
-[currentLevelInput, currentXpInput, goalLevelInput].forEach(input => {
+[currentLevelInput, currentXpInput, goalLevelInput].forEach((input) => {
   input.addEventListener("input", updateDisplay);
 });
 
