@@ -68,7 +68,6 @@ function validateInputs() {
   } else {
     goalLevelInput.classList.remove("invalid");
   }
-
   return valid;
 }
 
@@ -87,15 +86,15 @@ function getPhaseMaxXP(level) {
 
 // === Calculate XP Needed ===
 function calculateXpNeeded(targetLevel) {
-  const currentLevel = parseInt(currentLevelInput.value) || 0;
-  const currentXp = parseInt(currentXpInput.value) || 0;
+  const currentLevel = parseInt(currentLevelInput.value) || MIN_BP_LEVEL;
+  const currentXp = parseInt(currentXpInput.value) || MIN_XP;
 
   let currentTotalXp = calculateTotalXp(currentLevel, currentXp);
   let goalTotalXp = calculateTotalXp(targetLevel);
   return goalTotalXp - currentTotalXp;
 }
 
-function calculateTotalXp(currentLevel, currentXp = 0) {
+function calculateTotalXp(currentLevel, currentXp = MIN_XP) {
   const completeLevels = currentLevel - 1;
 
   if (completeLevels <= PHASE_1_MAX_BP_LEVEL) {
@@ -114,7 +113,7 @@ function calculateTotalXp(currentLevel, currentXp = 0) {
 }
 
 function getResultString(xpNeeded) {
-  if (xpNeeded < 0) {
+  if (parseInt(xpNeeded) < MIN_XP) {
     return "This level is complete";
   } else {
     return xpNeeded.toLocalString();
@@ -131,18 +130,16 @@ function updateDisplay() {
     return;
   }
 
-  const goalLevel = parseInt(goalLevelInput.value) || 106;
+  const goalLevel = parseInt(goalLevelInput.value) || PHASE_3_MAX_BP_LEVEL;
   const goalXpNeeded = calculateXpNeeded(goalLevel + 1);
   const phase1XpNeeded = calculateXpNeeded(PHASE_1_MAX_BP_LEVEL + 1);
   const phase2XpNeeded = calculateXpNeeded(PHASE_2_MAX_BP_LEVEL + 1);
   const phase3XpNeeded = calculateXpNeeded(PHASE_3_MAX_BP_LEVEL + 1);
 
-  
-
   goalXpBox.textContent = `XP needed for Goal Level: ${getResultString(goalXpNeeded)}`;
   phase1Results.textContent = `Total XP to complete level 96 (1104000 XP): ${getResultString(phase1XpNeeded)}`;
   phase2Results.textContent = `Total XP to complete level 101 (1354000 XP): ${getResultString(phase2XpNeeded)}`;
-  phase3Results.textContent = `Total XP to complete level 106 (1854000 XP): ${calculateXpNeeded(phase3XpNeeded)}`;
+  phase3Results.textContent = `Total XP to complete level 106 (1854000 XP): ${getResultString(phase3XpNeeded)}`;
 }
 
 // === Event Listeners ===
