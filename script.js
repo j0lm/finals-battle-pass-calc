@@ -1,19 +1,19 @@
 // === CONFIGURATION ===
-const PHASE_1_TOTAL_XP = 1104000;
-const PHASE_2_TOTAL_XP = 1354000;
-const PHASE_3_TOTAL_XP = 1854000;
 const MIN_BP_LEVEL = 1;
 const PHASE_1_MAX_BP_LEVEL = 96;
 const PHASE_2_MAX_BP_LEVEL = 101;
 const PHASE_3_MAX_BP_LEVEL = 106;
 const MIN_XP = 0;
 const PHASE_2_MAX_XP = 50000;
-const PHASE_3_MAX_XP = 100000;
+const PHASE_3_MAX_XP = 75000;
 const PHASE_1_BASE_XP = 6000;
 const PHASE_1_XP_DELTA = 1000;
 const PHASE_1_LEVELS_PER_PAGE = 8;
 const PHASE_2_LEVELS_PER_PAGE = 5;
 const PHASE_3_LEVELS_PER_PAGE = 5;
+const PHASE_1_TOTAL_XP = 1104000;
+const PHASE_2_TOTAL_XP = PHASE_1_TOTAL_XP + (PHASE_2_MAX_XP * PHASE_2_LEVELS_PER_PAGE);
+const PHASE_3_TOTAL_XP = PHASE_2_TOTAL_XP + (PHASE_3_MAX_XP * PHASE_3_LEVELS_PER_PAGE);
 
 // === Grab DOM Elements ===
 const currentLevelInput = document.getElementById("currentLevel");
