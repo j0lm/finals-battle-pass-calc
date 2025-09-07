@@ -272,8 +272,8 @@ input::-webkit-outer-spin-button {
   border: none;
 }
 
-/* Invalid Styling */
+/* Invalid Stylin */
 
 input.invalid {
-  color: #ff4b4b;
+  color: #ffa24b;
 }
