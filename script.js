@@ -26,6 +26,50 @@ const phase2Results = document.getElementById("phase2Results");
 const phase3Results = document.getElementById("phase3Results");
 
 // === Validate Inputs ===
+function validateBPLevel() {
+  let valid = true;
+  if (
+    currentLevelInput.value < MIN_BP_LEVEL ||
+    currentLevelInput.value > PHASE_3_MAX_BP_LEVEL
+  ) {
+    currentLevelInput.classList.add("invalid");
+    valid = false;
+  } else {
+    currentLevelInput.classList.remove("invalid");
+  }
+  return valid;
+}
+
+function validateCurrentXp() {
+  let valid = true;
+  let maxXP = getPhaseMaxXP(parseInt(currentLevelInput.value));
+  if (
+    parseInt(currentXpInput.value) < MIN_XP ||
+    parseInt(currentXpInput.value) > maxXP
+  ) {
+    currentXpInput.classList.add("invalid");
+    valid = false;
+  } else {
+    currentXpInput.classList.remove("invalid");
+  }
+  return valid;
+}
+
+function validateGoalLevel() {
+  let valid = true;
+  if (
+    goalLevelInput.value === "" ||
+    parseInt(goalLevelInput.value) < MIN_BP_LEVEL ||
+    parseInt(goalLevelInput.value) > PHASE_3_MAX_BP_LEVEL
+  ) {
+    goalLevelInput.classList.add("invalid");
+    valid = false;
+  } else {
+    goalLevelInput.classList.remove("invalid");
+  }
+  return valid;
+}
+
 function validateInputs() {
   let valid = true;
 
