@@ -20,6 +20,18 @@ const currentLevelInput = document.getElementById("currentLevel");
 const currentXpInput = document.getElementById("currentXp");
 const goalLevelInput = document.getElementById("goalLevel");
 
+const currentXpMax = document.getElementById("currentXpMax");
+
+const goalXpLeft = document.getElementById("goalXpLeft");
+const phase1XpLeft = document.getElementById("phase1XpLeft");
+const phase2XpLeft = document.getElementById("phase2XpLeft");
+const phase3XpLeft = document.getElementById("phase3XpLeft");
+
+const goalXpProgress = document.getElementById("goalXpProgress");
+const phase1XpProgress = document.getElementById("phase1XpProgress");
+const phase2XpProgress = document.getElementById("phase2XpProgress");
+const phase3XpProgress = document.getElementById("phase3XpProgress");
+
 const goalXpBox = document.getElementById("goalXp");
 const phase1Results = document.getElementById("phase1Results");
 const phase2Results = document.getElementById("phase2Results");
@@ -29,8 +41,9 @@ const phase3Results = document.getElementById("phase3Results");
 function validateBPLevel() {
   let valid = true;
   if (
-    currentLevelInput.value < MIN_BP_LEVEL ||
-    currentLevelInput.value > PHASE_3_MAX_BP_LEVEL
+    goalLevelInput.value === "" ||
+    parseInt(currentLevelInput.value) < MIN_BP_LEVEL ||
+    parseInt(currentLevelInput.value) > PHASE_3_MAX_BP_LEVEL
   ) {
     currentLevelInput.classList.add("invalid");
     valid = false;
@@ -70,49 +83,6 @@ function validateGoalLevel() {
   return valid;
 }
 
-function validateInputs() {
-  let valid = true;
-
-  // Validate current level
-  if (
-    currentLevelInput.value === "" ||
-    currentLevelInput.value < MIN_BP_LEVEL ||
-    currentLevelInput.value > PHASE_3_MAX_BP_LEVEL
-  ) {
-    currentLevelInput.classList.add("invalid");
-    valid = false;
-  } else {
-    currentLevelInput.classList.remove("invalid");
-  }
-
-  let maxXP = getPhaseMaxXP(parseInt(currentLevelInput.value));
-
-  // Validate current XP
-  if (
-    currentXpInput.value === "" ||
-    parseInt(currentXpInput.value) < MIN_XP ||
-    parseInt(currentXpInput.value) > maxXP
-  ) {
-    currentXpInput.classList.add("invalid");
-    valid = false;
-  } else {
-    currentXpInput.classList.remove("invalid");
-  }
-
-  // Validate goal level
-  if (
-    goalLevelInput.value === "" ||
-    parseInt(goalLevelInput.value) < parseInt(currentLevelInput.value) ||
-    parseInt(goalLevelInput.value) > PHASE_3_MAX_BP_LEVEL
-  ) {
-    goalLevelInput.classList.add("invalid");
-    valid = false;
-  } else {
-    goalLevelInput.classList.remove("invalid");
-  }
-  return valid;
-}
-
 function getPhaseMaxXP(level) {
   if (level > PHASE_2_MAX_BP_LEVEL) {
     return PHASE_3_MAX_XP;
@@ -127,18 +97,18 @@ function getPhaseMaxXP(level) {
 }
 
 // === Calculate XP Needed ===
-function calculateXpNeeded(targetLevel) {
-  const currentLevel = parseInt(currentLevelInput.value) || MIN_BP_LEVEL;
-  const currentXp = parseInt(currentXpInput.value) || MIN_XP;
-
-  let currentTotalXp = calculateTotalXp(currentLevel, currentXp);
+function calculateXpNeeded(xp, targetLevel) {
   let goalTotalXp = calculateTotalXp(targetLevel);
-  return goalTotalXp - currentTotalXp;
+  return goalTotalXp - xp;
 }
 
 function calculateTotalXp(currentLevel, currentXp = MIN_XP) {
   const completeLevels = currentLevel - 1;
-
+  if (currentXp === "") {
+    currentXp = 0;
+  } else {
+    currentXp = parseInt(currentXpInput.value)
+  }
   if (completeLevels <= PHASE_1_MAX_BP_LEVEL) {
     let currentTotalXp = MIN_XP;
     for (let level = MIN_BP_LEVEL; level < currentLevel; level++) {
@@ -162,26 +132,60 @@ function getResultString(xpNeeded) {
   }
 }
 
+function getXpLeftString(xpNeeded) {
+  if (parseInt(xpNeeded) < MIN_XP) {
+    return "COMPLETE"
+  } else {
+    return `${xpNeeded.toLocaleString()} XP LEFT`;
+  }
+}
+
+function getXpProgressString(xp) {
+  return `${xp}/${getPhaseMaxXP(parseInt(currentLevelInput.value))}`
+}
+
 // === Update Display Instantly ===
 function updateDisplay() {
-  if (!validateInputs()) {
-    goalXpBox.textContent = `Total XP for level - at - XP: -`;
-    phase1Results.textContent = `Total XP to complete level 96 (${PHASE_1_TOTAL_XP} XP): -`;
-    phase2Results.textContent = `Total XP to complete level 101 (${PHASE_2_TOTAL_XP} XP): -`;
-    phase3Results.textContent = `Total XP to complete level 106 (${PHASE_3_TOTAL_XP} XP): -`;
+  let isCurrentLevelValid = validateBPLevel();
+  let isCurrentXpValid = validateCurrentXp();
+  let isCurrentGoalValid = validateGoalLevel();
+
+  if (isCurrentLevelValid && isCurrentXpValid) {
+    let currentTotalXp = calculateTotalXp(parseInt(currentLevelInput.value), currentXpInput.value);
+    if (isCurrentGoalValid) {
+      goalXpNeeded = calculateXpNeeded(currentTotalXp, goalLevelInput.value);
+      goalXpNeeded.textContent = getXpLeftString(goalXpNeeded);
+      goalXpProgress.textContent = getXpProgressString(goalXpNeeded);
+    } else {
+      goalXpLeft.textContent = `INVALID GOAL LEVEL`;
+      goalXpProgress.textContent = `-/-`
+    }
+    
+    let phase1XpNeeded = calculateXpNeeded(currentTotalXp, PHASE_1_MAX_BP_LEVEL + 1);
+    let phase2XpNeeded = calculateXpNeeded(currentTotalXp, PHASE_2_MAX_BP_LEVEL + 1);
+    let phase3XpNeeded = calculateXpNeeded(currentTotalXp, PHASE_3_MAX_BP_LEVEL + 1);
+
+    phase1XpLeft.textContent = getXpLeftString(phase1XpNeeded);
+    phase2XpLeft.textContent = getXpLeftString(phase2XpNeeded);
+    phase3XpLeft.textContent = getXpLeftString(phase3XpNeeded);
+
+    phase1XpProgress.textContent = getXpProgressString(currentTotalXp);
+    phase2XpProgress.textContent = getXpProgressString(currentTotalXp);
+    phase3XpProgress.textContent = getXpProgressString(currentTotalXp);
+    
+    currentXpMax.textContent = `/${getPhaseMaxXP(parseInt(currentLevelInput.value))}`
     return;
+  } else {
+    goalXpLeft.textContent = `INVALID CURRENT LEVEL`
+    phase1XpLeft.textContent = `INVALID CURRENT LEVEL`
+    phase2XpLeft.textContent = `INVALID CURRENT LEVEL`
+    phase3XpLeft.textContent = `INVALID CURRENT LEVEL`
+    goalXpProgress.textContent = `-/-`
+    phase1XpProgress.textContent = `-/-`
+    phase2XpProgress.textContent = `-/-`
+    phase3XpProgress.textContent = `-/-`
+    currentXpMax.textContent = `-`
   }
-
-  const goalLevel = parseInt(goalLevelInput.value) || PHASE_3_MAX_BP_LEVEL;
-  const goalXpNeeded = calculateXpNeeded(goalLevel + 1);
-  const phase1XpNeeded = calculateXpNeeded(PHASE_1_MAX_BP_LEVEL + 1);
-  const phase2XpNeeded = calculateXpNeeded(PHASE_2_MAX_BP_LEVEL + 1);
-  const phase3XpNeeded = calculateXpNeeded(PHASE_3_MAX_BP_LEVEL + 1);
-
-  goalXpBox.textContent = `XP needed for Goal Level: ${getResultString(goalXpNeeded)}`;
-  phase1Results.textContent = `Total XP to complete level 96 (${PHASE_1_TOTAL_XP} XP): ${getResultString(phase1XpNeeded)}`;
-  phase2Results.textContent = `Total XP to complete level 101 (${PHASE_2_TOTAL_XP} XP): ${getResultString(phase2XpNeeded)}`;
-  phase3Results.textContent = `Total XP to complete level 106 (${PHASE_3_TOTAL_XP} XP): ${getResultString(phase3XpNeeded)}`;
 }
 
 // === Event Listeners ===
