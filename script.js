@@ -180,15 +180,16 @@ function updateDisplay() {
 
     return;
   } else {
-    goalXpLeft.textContent = `INVALID LEVEL`
-    phase1XpLeft.textContent = `INVALID LEVEL`
-    phase2XpLeft.textContent = `INVALID LEVEL`
-    phase3XpLeft.textContent = `INVALID LEVEL`
-    goalXpProgress.textContent = `-/-`
-    phase1XpProgress.textContent = `-/-`
-    phase2XpProgress.textContent = `-/-`
-    phase3XpProgress.textContent = `-/-`
-    currentXpMax.textContent = `-`
+    goalXpLeft.textContent = `INVALID LEVEL`;
+    phase1XpLeft.textContent = `INVALID LEVEL`;
+    phase2XpLeft.textContent = `INVALID LEVEL`;
+    phase3XpLeft.textContent = `INVALID LEVEL`;
+    goalXpProgress.textContent = `-/-`;
+    phase1XpProgress.textContent = `-/-`;
+    phase2XpProgress.textContent = `-/-`;
+    phase3XpProgress.textContent = `-/-`;
+    currentXpMax.textContent = isCurrentLevelValid ? `/${phaseMaxXp.toLocaleString()} XP` : `/- XP`;
+    xpBarFill.style.width = `0%`;
     return;
   }
 }
