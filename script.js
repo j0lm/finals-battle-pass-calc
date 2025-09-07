@@ -56,18 +56,55 @@ function validateBPLevel() {
   return valid;
 }
 
+function centerCurrentXpText() {
+  const container = document.querySelector('.current-xp-text');
+  const input = document.getElementById('currentXp');
+  const label = document.getElementById('currentXpMax');
+
+  // Measure combined width of input + label
+  const inputWidth = input.offsetWidth;
+  const labelWidth = label.offsetWidth;
+  const totalWidth = inputWidth + labelWidth;
+
+  // Shift container so combined block is centered
+  container.style.transform = `translateX(-${totalWidth / 2}px) translateY(-50%)`;
+}
+
 function validateCurrentXp() {
   let valid = true;
-  let maxXP = getPhaseMaxXP(parseInt(currentLevelInput.value));
-  if (
-    parseInt(currentXpInput.value) < MIN_XP ||
-    parseInt(currentXpInput.value) > maxXP
-  ) {
-    currentXpInput.classList.add("invalid");
+
+  const selection = window.getSelection();
+  const caretOffset = selection.focusOffset;
+
+  // Remove commas and get the numeric value
+  let valueStr = currentXpInput.textContent.replace(/,/g, "");
+  let value = parseInt(valueStr, 10);
+
+  const maxXp = getPhaseMaxXp(parseInt(currentLevelInput.value));
+
+  // Check if empty or not a number
+  if (!/^\d*$/.test(valueStr) || value < 0 || value > maxXp) {
     valid = false;
+    currentXpInput.classList.add("invalid");
   } else {
+    valid = true;
     currentXpInput.classList.remove("invalid");
   }
+
+  // Only format if it's a number
+  if (/^\d*$/.test(valueStr)) {
+    const formatted = Number(valueStr || 0).toLocaleString();
+    currentXpInput.textContent = formatted;
+
+    // Restore caret position
+    const newOffset = Math.min(caretOffset + (formatted.length - valueStr.length), formatted.length);
+    const range = document.createRange();
+    range.setStart(currentXpInput.firstChild || currentXpInput, newOffset);
+    range.collapse(true);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+  centerCurrentXpText();
   return valid;
 }
 
@@ -86,7 +123,7 @@ function validateGoalLevel() {
   return valid;
 }
 
-function getPhaseMaxXP(level) {
+function getPhaseMaxXp(level) {
   if (level > PHASE_2_MAX_BP_LEVEL) {
     return PHASE_3_MAX_XP;
   }
@@ -144,7 +181,7 @@ function updateDisplay() {
 
   if (isCurrentLevelValid && isCurrentXpValid) {
     let currentLevel = parseInt(currentLevelInput.value);
-    let currentXp = currentXpInput.value === "" ? 0 : parseInt(currentXpInput.value);
+    let currentXp = Number(currentXpInput.innerText);
     let currentTotalXp = calculateTotalXp(currentLevel, currentXp);
     if (isCurrentGoalValid) {
       let currentGoal = parseInt(goalLevelInput.value);
@@ -174,7 +211,7 @@ function updateDisplay() {
     phase2BarFill.style.width = getBarProgress(currentTotalXp, PHASE_2_TOTAL_XP);
     phase3BarFill.style.width = getBarProgress(currentTotalXp, PHASE_3_TOTAL_XP);
 
-    let phaseMaxXp = getPhaseMaxXP(currentLevel)
+    let phaseMaxXp = getPhaseMaxXp(currentLevel)
     currentXpMax.textContent = `/${phaseMaxXp.toLocaleString()} XP`
     xpBarFill.style.width = getBarProgress(currentXp, phaseMaxXp);
 
@@ -188,7 +225,7 @@ function updateDisplay() {
     phase1XpProgress.textContent = `?/?`;
     phase2XpProgress.textContent = `?/?`;
     phase3XpProgress.textContent = `?/?`;
-    currentXpMax.textContent = isCurrentLevelValid ? `/${phaseMaxXp.toLocaleString()} XP` : `/? XP`;
+    currentXpMax.textContent = isCurrentLevelValid ? `/${getPhaseMaxXp(currentLevel).toLocaleString()} XP` : `/? XP`;
     xpBarFill.style.width = `0%`;
     phase1BarFill.style.width = `0%`;
     phase2BarFill.style.width = `0%`;
