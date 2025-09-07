@@ -18,6 +18,7 @@ body {
     background: #ce2c30;
     font-family: "Saira Extra Condensed", sans-serif;
     font-style: normal;
+    justify-items: center;
   }
 
 .title-text {
@@ -27,11 +28,12 @@ body {
   flex-direction:column;
   align-items: center;
   line-height: 1;
+  margin: 5px
 }
 
 .title-text h1 {
   font-weight: 900;
-  font-size: clamp(2.5rem, 5.625vw, 6.75rem);
+  font-size: 108px;
   margin: 0;
 }
 
@@ -43,40 +45,55 @@ body {
 
 .current-level-box {
   background-color: rgba(0, 0, 0, 0.65);
-  color: #f1f2f4;
-  border-radius: clamp(8px, 1.458vw, 40px);
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  line-height: 1;
-  margin: 0;
-  padding: 0;
-  justify-content: center;
+  width: 400px;
+  height: 400px;
+  box-sizing: border-box;
 }
+
 .current-level-box label {
-  font-size: clamp(2rem, 2vw, 4rem);
+  font-family: "Saira Extra Condensed", sans-serif;
   font-weight: 700;
   font-style: italic;
+  font-size: 72px;
+  color: #f1f2f4;
+  text-align: center;
+  width: 100%;
+  line-height: 0.8;
+  margin-top: 15px
 }
 
 .current-level-box input {
   font-family: "Saira Extra Condensed", sans-serif;
-  font-style: normal;
   font-weight: 700;
-  background-color: transparent;
-  color: #f1f2f4;
-  border: none;
-  font-size: clamp(32px, 10vw, 256px);
-  text-align: center;
   font-style: italic;
-  line-height: 1;
-  padding: 0;
+  font-size: 18rem;
+  color: #f1f2f4;
+  background-color: transparent;
+  border: none;
+  text-align: center;
   box-sizing: border-box;
+  padding: 0;
+  margin: 0 auto;
+  height: 320px;
+  width: 100%;
+  transform: translateX(-5%);
 }
 
 .current-level-box input:focus {
   outline: none;
 }
+
+.current-level-box input::-webkit-inner-spin-button,
+.current-level-box input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 
 /* === Input Fields === */
 .input-box {
