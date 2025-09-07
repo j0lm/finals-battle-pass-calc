@@ -43,9 +43,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 95%;
+  width: 90%;
   max-width: 400px;
-  height: 95%;
+  height: 90%;
   max-height: 400px;
   box-sizing: border-box;
   margin: 12px auto;
@@ -54,19 +54,20 @@
 .current-level-box label {
   font-weight: 700;
   font-style: italic;
-  font-size: 72px;
+  font-size: clamp(40px, 18vw, 72px);
   color: #f1f2f4;
   text-align: center;
   width: 100%;
   line-height: 0.8;
-  margin-top: 30px
+  margin-top: 30px;
+  transform: translateX(-1%);
 }
 
 .current-level-box input {
   font-family: "Saira Extra Condensed", sans-serif;
   font-weight: 700;
   font-style: italic;
-  font-size: 18rem;
+  font-size: clamp(16rem, 14vw, 18rem);
   color: #f1f2f4;
   border: none;
   text-align: center;
@@ -75,9 +76,8 @@
   margin: 0 auto;
   height: 280px;
   width: 100%;
-  transform: translateX(-5%);
-    background-color: transparent;
-
+  background-color: transparent;
+  transform: translateX(calc(-7% + (1 - 100% / 400px) * -15%));
 }
 
 input:focus {
@@ -95,7 +95,8 @@ input::-webkit-outer-spin-button {
 /* Current XP Styling */
 .current-xp {
   position: relative;
-  width: 400px;
+  width: 90%;
+  max-width: 400px;
   height: 35px;
   margin: 20px auto;
 }
@@ -130,7 +131,8 @@ input::-webkit-outer-spin-button {
   text-align: center;
   display: flex;
   align-items: center;
-  -webkit-text-stroke: 1px rgba(0, 0, 0, .3)
+  -webkit-text-stroke: 1px rgba(0, 0, 0, .3);
+  white-space: nowrap;
 }
 
 .current-xp-text input {
@@ -144,8 +146,9 @@ input::-webkit-outer-spin-button {
   font-weight: inherit;
   font-size: inherit;
   pointer-events: auto;
-  padding: 0;
   margin: 0;
+  height: 35px;
+  overflow: visible;
 }
 
 
@@ -272,7 +275,7 @@ input::-webkit-outer-spin-button {
   border: none;
 }
 
-/* Invalid Stylin */
+/* Invalid Input Styling */
 
 input.invalid {
   color: #ffa24b;
