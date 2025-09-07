@@ -1,19 +1,5 @@
 /* === General Page Styling === */
-/*
-body {
-  font-family: "Saira Extra Condensed", sans-serif;
-  font-weight: 800;
-  font-style: normal;
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-  background: #ce2c30;
-  color: #ffecec;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  font-size: 1.8rem;
-}
-  */
+
   body {
     background: #ce2c30;
     font-family: "Saira Extra Condensed", sans-serif;
@@ -74,7 +60,6 @@ body {
   font-style: italic;
   font-size: 18rem;
   color: #f1f2f4;
-  background-color: transparent;
   border: none;
   text-align: center;
   box-sizing: border-box;
@@ -83,6 +68,8 @@ body {
   height: 280px;
   width: 100%;
   transform: translateX(-5%);
+    background-color: transparent;
+
 }
 
 input:focus {
@@ -100,7 +87,7 @@ input::-webkit-outer-spin-button {
 .current-xp {
   position: relative;
   width: 400px;
-  height: 50px;
+  height: 35px;
   margin: 20px;
 }
 
@@ -108,7 +95,7 @@ input::-webkit-outer-spin-button {
   background-color: rgba(0, 0, 0, 0.65);
   width: 100%;
   height: 100%;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -116,7 +103,7 @@ input::-webkit-outer-spin-button {
   background-color: #f7bb28;
   height: 100%;
   width: 100%;
-  border-radius: 12px 0 0 12px;
+  border-radius: 8px;
   transition: width .3s ease;
 }
 
@@ -150,6 +137,339 @@ input::-webkit-outer-spin-button {
   padding: 0;
   margin: 0;
 }
+
+/* Goal Progress Style */
+/* Container */
+.goal-progress {
+   width: 90%;           
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: "Saira Extra Condensed", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 30px;
+  color: #f1f2f4;
+  position: relative;
+  margin: 40px;
+}
+
+/* Top row: input on the left */
+.goal-progress-row {
+  display: flex;
+  align-items: center;
+  position: relative; /* for absolute positioning of title */
+  height: 18px;
+}
+
+/* Input inline with label */
+.goal-input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px
+}
+
+/* Label */
+.goal-input label {
+  margin: 0;
+}
+
+/* Input box */
+.goal-input input {
+  width: 4ch;
+  height: 26px;
+  text-align: left;
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: inherit;
+  color: inherit;
+  box-sizing: border-box;
+  background-color: transparent;
+  border: none;
+}
+
+/* Goal title centered across 400px, vertically aligned with input */
+.goal-title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap; /* prevent wrapping */
+  text-align: center;
+}
+
+/* Progress bar container */
+.current-goal-progress-bar {
+  width: 100%;
+  height: 10px; /* adjust as needed */
+  background-color: rgba(0, 0, 0, 0.65);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Progress bar fill */
+.current-goal-progress-bar-fill {
+  height: 100%;
+  width: 100%; /* update dynamically later */
+  background-color: #f1f2f4;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* Bottom row: XP stats */
+.goal-xp-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 18px;
+  font-size: 30px;
+}
+
+/* Bottom texts */
+.goal-xp-left {
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: inherit;
+}
+
+.goal-xp-progress-text {
+  font-family: inherit;
+  font-weight: 500;
+  font-style: inherit;
+  font-size: inherit;
+  font-size: 24px;
+}
+
+
+/* Phase 1 Style */
+.phase-1-progress {
+  width: 90%;           
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: "Saira Extra Condensed", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 30px;
+  color: #f1f2f4;
+  position: relative;
+  margin: 40px;
+}
+
+.phase-1-progress-row {
+  display: flex;
+  align-items: center;
+  position: relative; /* for absolute positioning of title */
+  height: 18px;
+}
+
+.phase-1-title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap; /* prevent wrapping */
+  text-align: center;
+}
+
+.current-phase-1-progress-bar {
+  width: 100%;
+  height: 10px; /* adjust as needed */
+  background-color: rgba(0, 0, 0, 0.65);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Progress bar fill */
+.current-phase-1-progress-bar-fill {
+  height: 100%;
+  width: 100%; /* update dynamically later */
+  background-color: #f1f2f4;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* Bottom row: XP stats */
+.phase-1-xp-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 18px;
+}
+
+/* Bottom texts */
+.phase-1-xp-left {
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: inherit;
+}
+
+.phase-1-xp-progress-text {
+  font-family: inherit;
+  font-weight: 500;
+  font-style: inherit;
+  font-size: inherit;
+  font-size: 24px;
+}
+
+/* Phase 2 Style */
+.phase-2-progress {
+  width: 90%;           
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: "Saira Extra Condensed", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 30px;
+  color: #f1f2f4;
+  position: relative;
+  margin: 40px;
+}
+
+.phase-2-progress-row {
+  display: flex;
+  align-items: center;
+  position: relative; /* for absolute positioning of title */
+  height: 18px;
+}
+
+.phase-2-title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap; /* prevent wrapping */
+  text-align: center;
+}
+
+.current-phase-2-progress-bar {
+  width: 100%;
+  height: 10px; /* adjust as needed */
+  background-color: rgba(0, 0, 0, 0.65);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Progress bar fill */
+.current-phase-2-progress-bar-fill {
+  height: 100%;
+  width: 100%; /* update dynamically later */
+  background-color: #f1f2f4;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* Bottom row: XP stats */
+.phase-2-xp-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 18px;
+}
+
+/* Bottom texts */
+.phase-2-xp-left {
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: inherit;
+}
+
+.phase-2-xp-progress-text {
+  font-family: inherit;
+  font-weight: 500;
+  font-style: inherit;
+  font-size: inherit;
+  font-size: 24px;
+}
+
+
+/* Phase 3 Style */
+.phase-3-progress {
+  width: 90%;           
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: "Saira Extra Condensed", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 30px;
+  color: #f1f2f4;
+  position: relative;
+  margin: 40px;
+}
+
+.phase-3-progress-row {
+  display: flex;
+  align-items: center;
+  position: relative; /* for absolute positioning of title */
+  height: 18px;
+}
+
+.phase-3-title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap; /* prevent wrapping */
+  text-align: center;
+}
+
+.current-phase-3-progress-bar {
+  width: 100%;
+  height: 10px; /* adjust as needed */
+  background-color: rgba(0, 0, 0, 0.65);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Progress bar fill */
+.current-phase-3-progress-bar-fill {
+  height: 100%;
+  width: 100%; /* update dynamically later */
+  background-color: #f1f2f4;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* Bottom row: XP stats */
+.phase-3-xp-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 18px;
+}
+
+/* Bottom texts */
+.phase-3-xp-left{
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: inherit;
+}
+
+.phase-3-xp-progress-text {
+  font-family: inherit;
+  font-weight: 500;
+  font-style: inherit;
+  font-size: inherit;
+  font-size: 24px;
+}
+
+
 
 /* === Input Fields === */
 .input-box {
