@@ -121,6 +121,7 @@ input::-webkit-outer-spin-button {
   text-align: center;
   display: flex;
   align-items: center;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, .3)
 }
 
 .current-xp-text input {

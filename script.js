@@ -32,11 +32,6 @@ const phase1XpProgress = document.getElementById("phase1XpProgress");
 const phase2XpProgress = document.getElementById("phase2XpProgress");
 const phase3XpProgress = document.getElementById("phase3XpProgress");
 
-const goalXpBox = document.getElementById("goalXp");
-const phase1Results = document.getElementById("phase1Results");
-const phase2Results = document.getElementById("phase2Results");
-const phase3Results = document.getElementById("phase3Results");
-
 // === Validate Inputs ===
 function validateBPLevel() {
   let valid = true;
@@ -96,12 +91,6 @@ function getPhaseMaxXP(level) {
   );
 }
 
-// === Calculate XP Needed ===
-function calculateXpNeeded(targetLevel, currentTotalXp) {
-  let goalTotalXp = calculateTotalXp(targetLevel);
-  return goalTotalXp - currentTotalXp;
-}
-
 function calculateTotalXp(currentLevel, currentXp = MIN_XP) {
   const completeLevels = currentLevel - 1;
   if (completeLevels <= PHASE_1_MAX_BP_LEVEL) {
@@ -145,7 +134,8 @@ function updateDisplay() {
     let currentTotalXp = calculateTotalXp(currentLevel, currentXp);
     if (isCurrentGoalValid) {
       let currentGoal = parseInt(goalLevelInput.value);
-      goalXpNeeded = calculateXpNeeded(currentGoal + 1, currentTotalXp);
+      let goalTotalXp = calculateTotalXp(currentGoal + 1)
+      goalXpNeeded = goalTotalXp - currentLevel;
       goalXpLeft.textContent = getXpLeftString(goalXpNeeded);
       goalXpProgress.textContent = getXpProgressString(currentTotalXp, currentGoal + 1);
     } else {
@@ -153,9 +143,9 @@ function updateDisplay() {
       goalXpProgress.textContent = `-/-`
     }
     
-    let phase1XpNeeded = calculateXpNeeded(PHASE_1_MAX_BP_LEVEL + 1, currentTotalXp);
-    let phase2XpNeeded = calculateXpNeeded(PHASE_2_MAX_BP_LEVEL + 1, currentTotalXp);
-    let phase3XpNeeded = calculateXpNeeded(PHASE_3_MAX_BP_LEVEL + 1, currentTotalXp);
+    let phase1XpNeeded = PHASE_1_TOTAL_XP - currentTotalXp;
+    let phase2XpNeeded = PHASE_2_TOTAL_XP - currentTotalXp;
+    let phase3XpNeeded = PHASE_3_TOTAL_XP - currentTotalXp;
 
     phase1XpLeft.textContent = getXpLeftString(phase1XpNeeded);
     phase2XpLeft.textContent = getXpLeftString(phase2XpNeeded);
