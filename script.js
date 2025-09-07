@@ -32,6 +32,14 @@ const phase1XpProgress = document.getElementById("phase1XpProgress");
 const phase2XpProgress = document.getElementById("phase2XpProgress");
 const phase3XpProgress = document.getElementById("phase3XpProgress");
 
+const xpBarFill = document.getElementById("xpFill");
+const goalBarFill = document.getElementById("goalFill");
+const phase1BarFill = document.getElementById("phase1Fill");
+const phase2BarFill = document.getElementById("phase2Fill");
+const phase3BarFill = document.getElementById("phase3Fill");
+
+
+
 // === Validate Inputs ===
 function validateBPLevel() {
   let valid = true;
@@ -121,6 +129,13 @@ function getXpProgressString(currentTotalXp, targetLevel) {
   return `${currentXp.toLocaleString()}/${targetTotalXp.toLocaleString()}`
 }
 
+function getBarProgress(currentValue, maxValue) {
+  let percent = (currentValue / maxValue) * 100;
+  if (percent < 0) percent = 0;
+  if (percent > 100) percent = 100;
+  return percent + "%";
+}
+
 // === Update Display Instantly ===
 function updateDisplay() {
   let isCurrentLevelValid = validateBPLevel();
@@ -134,9 +149,10 @@ function updateDisplay() {
     if (isCurrentGoalValid) {
       let currentGoal = parseInt(goalLevelInput.value);
       let goalTotalXp = calculateTotalXp(currentGoal + 1)
-      goalXpNeeded = goalTotalXp - currentLevel;
+      goalXpNeeded = goalTotalXp - currentTotalXp;
       goalXpLeft.textContent = getXpLeftString(goalXpNeeded);
       goalXpProgress.textContent = getXpProgressString(currentTotalXp, currentGoal + 1);
+      goalBarFill.style.width = getBarProgress(currentTotalXp, goalTotalXp);
     } else {
       goalXpLeft.textContent = `INVALID GOAL LEVEL`;
       goalXpProgress.textContent = `-/-`
@@ -153,8 +169,15 @@ function updateDisplay() {
     phase1XpProgress.textContent = getXpProgressString(currentTotalXp, PHASE_1_MAX_BP_LEVEL + 1);
     phase2XpProgress.textContent = getXpProgressString(currentTotalXp, PHASE_2_MAX_BP_LEVEL + 1);
     phase3XpProgress.textContent = getXpProgressString(currentTotalXp, PHASE_3_MAX_BP_LEVEL + 1);
-    
-    currentXpMax.textContent = `/${getPhaseMaxXP(currentLevel)}`
+
+    phase1BarFill.style.width = getBarProgress(currentTotalXp, PHASE_1_TOTAL_XP);
+    phase2BarFill.style.width = getBarProgress(currentTotalXp, PHASE_2_TOTAL_XP);
+    phase3BarFill.style.width = getBarProgress(currentTotalXp, PHASE_3_TOTAL_XP);
+
+    let phaseMaxXp = getPhaseMaxXP(currentLevel)
+    currentXpMax.textContent = `/${phaseMaxXp.toLocaleString()} XP`
+    xpBarFill.style.width = getBarProgress(currentXp, phaseMaxXp);
+
     return;
   } else {
     goalXpLeft.textContent = `INVALID LEVEL`
