@@ -86,8 +86,7 @@ function getPhaseMaxXP(level) {
     return PHASE_2_MAX_XP;
   }
   return (
-    Math.floor((level - 1) / PHASE_1_LEVELS_PER_PAGE) * PHASE_1_XP_DELTA +
-    PHASE_1_BASE_XP
+    (Math.floor((level - 1) / PHASE_1_LEVELS_PER_PAGE)) * PHASE_1_XP_DELTA + PHASE_1_BASE_XP
   );
 }
 
@@ -155,7 +154,7 @@ function updateDisplay() {
     phase2XpProgress.textContent = getXpProgressString(currentTotalXp, PHASE_2_MAX_BP_LEVEL + 1);
     phase3XpProgress.textContent = getXpProgressString(currentTotalXp, PHASE_3_MAX_BP_LEVEL + 1);
     
-    currentXpMax.textContent = `/${getPhaseMaxXP(parseInt(currentLevelInput.value))}`
+    currentXpMax.textContent = `/${getPhaseMaxXP(currentLevel)}`
     return;
   } else {
     goalXpLeft.textContent = `INVALID LEVEL`
