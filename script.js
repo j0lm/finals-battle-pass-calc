@@ -41,7 +41,7 @@ const phase3Results = document.getElementById("phase3Results");
 function validateBPLevel() {
   let valid = true;
   if (
-    goalLevelInput.value === "" ||
+    currentLevelInput.value === "" ||
     parseInt(currentLevelInput.value) < MIN_BP_LEVEL ||
     parseInt(currentLevelInput.value) > PHASE_3_MAX_BP_LEVEL
   ) {
@@ -176,15 +176,16 @@ function updateDisplay() {
     currentXpMax.textContent = `/${getPhaseMaxXP(parseInt(currentLevelInput.value))}`
     return;
   } else {
-    goalXpLeft.textContent = `INVALID CURRENT LEVEL`
-    phase1XpLeft.textContent = `INVALID CURRENT LEVEL`
-    phase2XpLeft.textContent = `INVALID CURRENT LEVEL`
-    phase3XpLeft.textContent = `INVALID CURRENT LEVEL`
+    goalXpLeft.textContent = `INVALID LEVEL`
+    phase1XpLeft.textContent = `INVALID LEVEL`
+    phase2XpLeft.textContent = `INVALID LEVEL`
+    phase3XpLeft.textContent = `INVALID LEVEL`
     goalXpProgress.textContent = `-/-`
     phase1XpProgress.textContent = `-/-`
     phase2XpProgress.textContent = `-/-`
     phase3XpProgress.textContent = `-/-`
     currentXpMax.textContent = `-`
+    return;
   }
 }
 
