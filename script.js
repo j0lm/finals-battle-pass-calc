@@ -97,18 +97,13 @@ function getPhaseMaxXP(level) {
 }
 
 // === Calculate XP Needed ===
-function calculateXpNeeded(xp, targetLevel) {
+function calculateXpNeeded(targetLevel, currentTotalXp) {
   let goalTotalXp = calculateTotalXp(targetLevel);
-  return goalTotalXp - xp;
+  return goalTotalXp - currentTotalXp;
 }
 
 function calculateTotalXp(currentLevel, currentXp = MIN_XP) {
   const completeLevels = currentLevel - 1;
-  if (currentXp === "") {
-    currentXp = 0;
-  } else {
-    currentXp = parseInt(currentXpInput.value)
-  }
   if (completeLevels <= PHASE_1_MAX_BP_LEVEL) {
     let currentTotalXp = MIN_XP;
     for (let level = MIN_BP_LEVEL; level < currentLevel; level++) {
@@ -124,24 +119,18 @@ function calculateTotalXp(currentLevel, currentXp = MIN_XP) {
   }
 }
 
-function getResultString(xpNeeded) {
-  if (parseInt(xpNeeded) < MIN_XP) {
-    return `This level is complete`;
-  } else {
-    return xpNeeded.toLocaleString();
-  }
-}
-
 function getXpLeftString(xpNeeded) {
-  if (parseInt(xpNeeded) < MIN_XP) {
+  if (xpNeeded <= MIN_XP) {
     return "COMPLETE"
   } else {
     return `${xpNeeded.toLocaleString()} XP LEFT`;
   }
 }
 
-function getXpProgressString(xp) {
-  return `${xp}/${getPhaseMaxXP(parseInt(currentLevelInput.value))}`
+function getXpProgressString(currentTotalXp, targetLevel) {
+  let targetTotalXp = calculateTotalXp(targetLevel);
+  let currentXp = currentTotalXp > targetTotalXp ? targetTotalXp : currentTotalXp;
+  return `${currentXp.toLocaleString()}/${targetTotalXp.toLocaleString()}`
 }
 
 // === Update Display Instantly ===
@@ -151,27 +140,30 @@ function updateDisplay() {
   let isCurrentGoalValid = validateGoalLevel();
 
   if (isCurrentLevelValid && isCurrentXpValid) {
-    let currentTotalXp = calculateTotalXp(parseInt(currentLevelInput.value), currentXpInput.value);
+    let currentLevel = parseInt(currentLevelInput.value);
+    let currentXp = currentXpInput.value === "" ? 0 : parseInt(currentXpInput.value);
+    let currentTotalXp = calculateTotalXp(currentLevel, currentXp);
     if (isCurrentGoalValid) {
-      goalXpNeeded = calculateXpNeeded(currentTotalXp, goalLevelInput.value);
-      goalXpNeeded.textContent = getXpLeftString(goalXpNeeded);
-      goalXpProgress.textContent = getXpProgressString(goalXpNeeded);
+      let currentGoal = parseInt(goalLevelInput.value);
+      goalXpNeeded = calculateXpNeeded(currentGoal + 1, currentTotalXp);
+      goalXpLeft.textContent = getXpLeftString(goalXpNeeded);
+      goalXpProgress.textContent = getXpProgressString(currentTotalXp, currentGoal + 1);
     } else {
       goalXpLeft.textContent = `INVALID GOAL LEVEL`;
       goalXpProgress.textContent = `-/-`
     }
     
-    let phase1XpNeeded = calculateXpNeeded(currentTotalXp, PHASE_1_MAX_BP_LEVEL + 1);
-    let phase2XpNeeded = calculateXpNeeded(currentTotalXp, PHASE_2_MAX_BP_LEVEL + 1);
-    let phase3XpNeeded = calculateXpNeeded(currentTotalXp, PHASE_3_MAX_BP_LEVEL + 1);
+    let phase1XpNeeded = calculateXpNeeded(PHASE_1_MAX_BP_LEVEL + 1, currentTotalXp);
+    let phase2XpNeeded = calculateXpNeeded(PHASE_2_MAX_BP_LEVEL + 1, currentTotalXp);
+    let phase3XpNeeded = calculateXpNeeded(PHASE_3_MAX_BP_LEVEL + 1, currentTotalXp);
 
     phase1XpLeft.textContent = getXpLeftString(phase1XpNeeded);
     phase2XpLeft.textContent = getXpLeftString(phase2XpNeeded);
     phase3XpLeft.textContent = getXpLeftString(phase3XpNeeded);
 
-    phase1XpProgress.textContent = getXpProgressString(currentTotalXp);
-    phase2XpProgress.textContent = getXpProgressString(currentTotalXp);
-    phase3XpProgress.textContent = getXpProgressString(currentTotalXp);
+    phase1XpProgress.textContent = getXpProgressString(currentTotalXp, PHASE_1_MAX_BP_LEVEL + 1);
+    phase2XpProgress.textContent = getXpProgressString(currentTotalXp, PHASE_2_MAX_BP_LEVEL + 1);
+    phase3XpProgress.textContent = getXpProgressString(currentTotalXp, PHASE_3_MAX_BP_LEVEL + 1);
     
     currentXpMax.textContent = `/${getPhaseMaxXP(parseInt(currentLevelInput.value))}`
     return;
