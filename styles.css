@@ -1,12 +1,17 @@
-/* === General Page Styling === */
+/* General Page Styling */
 
   body {
     background: #ce2c30;
     font-family: "Saira Extra Condensed", sans-serif;
     font-style: normal;
-    justify-items: center;
+    margin: 0;
+    padding:0;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
 
+/* Heading Styling */
 .title-text {
   color: #f1f2f4;
   text-align: center;
@@ -14,7 +19,9 @@
   flex-direction:column;
   align-items: center;
   line-height: 1;
-  margin: 5px
+  display: flex;
+  flex-direction:column;
+  align-items: center;
 }
 
 .title-text h1 {
@@ -27,23 +34,24 @@
   font-weight: 700;
   font-size: 36px;
   margin: 0;
-  margin-bottom: 15px;
 }
 
-/* Current Level Style */
+/* Current Level Styling */
 .current-level-box {
   background-color: rgba(0, 0, 0, 0.65);
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 400px;
-  height: 400px;
+  width: 95%;
+  max-width: 400px;
+  height: 95%;
+  max-height: 400px;
   box-sizing: border-box;
+  margin: 12px auto;
 }
 
 .current-level-box label {
-  font-family: "Saira Extra Condensed", sans-serif;
   font-weight: 700;
   font-style: italic;
   font-size: 72px;
@@ -88,7 +96,7 @@ input::-webkit-outer-spin-button {
   position: relative;
   width: 400px;
   height: 35px;
-  margin: 20px;
+  margin: 20px auto;
 }
 
 .current-xp-progress-bar {
@@ -139,10 +147,9 @@ input::-webkit-outer-spin-button {
   margin: 0;
 }
 
-/* Goal Progress Style */
-/* Container */
-.goal-progress {
-   width: 90%;           
+/* White Bar Styling */
+.progress {
+  width: 90%;           
   max-width: 1200px;
   display: flex;
   flex-direction: column;
@@ -153,18 +160,91 @@ input::-webkit-outer-spin-button {
   font-size: 30px;
   color: #f1f2f4;
   position: relative;
-  margin: 40px;
+  margin: 40px auto;
 }
 
-/* Top row: input on the left */
-.goal-progress-row {
+.level-title-row {
   display: flex;
   align-items: center;
-  position: relative; /* for absolute positioning of title */
+  position: relative;
   height: 18px;
 }
 
-/* Input inline with label */
+.progress-title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  text-align: center;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px; /* adjust as needed */
+  background-color: rgba(255, 255, 255, 0.35);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 100%; /* update dynamically later */
+  background-color: #f1f2f4;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.xp-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 18px;
+  font-size: 30px;
+}
+
+.xp-left {
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: inherit;
+}
+
+.xp-progress-text {
+  font-family: inherit;
+  font-weight: 500;
+  font-style: inherit;
+  font-size: inherit;
+  font-size: 24px;
+}
+
+.xp-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 18px;
+  font-size: 30px;
+}
+
+.xp-left {
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: inherit;
+}
+
+.xp-progress-text {
+  font-family: inherit;
+  font-weight: 500;
+  font-style: inherit;
+  font-size: inherit;
+  font-size: 24px;
+}
+
+
+/* Goal Progress Input Style */
+
 .goal-input {
   display: flex;
   flex-direction: row;
@@ -172,12 +252,10 @@ input::-webkit-outer-spin-button {
   gap: 2px
 }
 
-/* Label */
 .goal-input label {
   margin: 0;
 }
 
-/* Input box */
 .goal-input input {
   width: 4ch;
   height: 26px;
@@ -192,59 +270,9 @@ input::-webkit-outer-spin-button {
   border: none;
 }
 
-/* Goal title centered across 400px, vertically aligned with input */
-.goal-title {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  white-space: nowrap; /* prevent wrapping */
-  text-align: center;
-}
 
-/* Progress bar container */
-.current-goal-progress-bar {
-  width: 100%;
-  height: 10px; /* adjust as needed */
-  background-color: rgba(255, 255, 255, 0.35);
-  border-radius: 3px;
-  overflow: hidden;
-  position: relative;
-}
 
-/* Progress bar fill */
-.current-goal-progress-bar-fill {
-  height: 100%;
-  width: 100%; /* update dynamically later */
-  background-color: #f1f2f4;
-  border-radius: 3px;
-  transition: width 0.3s ease;
-}
 
-/* Bottom row: XP stats */
-.goal-xp-stats {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 18px;
-  font-size: 30px;
-}
-
-/* Bottom texts */
-.goal-xp-left {
-  font-family: inherit;
-  font-weight: inherit;
-  font-style: inherit;
-  font-size: inherit;
-}
-
-.goal-xp-progress-text {
-  font-family: inherit;
-  font-weight: 500;
-  font-style: inherit;
-  font-size: inherit;
-  font-size: 24px;
-}
 
 
 /* Phase 1 Style */
