@@ -155,7 +155,7 @@ function updateDisplay() {
       goalBarFill.style.width = getBarProgress(currentTotalXp, goalTotalXp);
     } else {
       goalXpLeft.textContent = `INVALID GOAL LEVEL`;
-      goalXpProgress.textContent = `-/-`
+      goalXpProgress.textContent = `?/?`
     }
     
     let phase1XpNeeded = PHASE_1_TOTAL_XP - currentTotalXp;
@@ -184,12 +184,15 @@ function updateDisplay() {
     phase1XpLeft.textContent = `INVALID LEVEL`;
     phase2XpLeft.textContent = `INVALID LEVEL`;
     phase3XpLeft.textContent = `INVALID LEVEL`;
-    goalXpProgress.textContent = `-/-`;
-    phase1XpProgress.textContent = `-/-`;
-    phase2XpProgress.textContent = `-/-`;
-    phase3XpProgress.textContent = `-/-`;
-    currentXpMax.textContent = isCurrentLevelValid ? `/${phaseMaxXp.toLocaleString()} XP` : `/- XP`;
+    goalXpProgress.textContent = `?/?`;
+    phase1XpProgress.textContent = `?/?`;
+    phase2XpProgress.textContent = `?/?`;
+    phase3XpProgress.textContent = `?/?`;
+    currentXpMax.textContent = isCurrentLevelValid ? `/${phaseMaxXp.toLocaleString()} XP` : `/? XP`;
     xpBarFill.style.width = `0%`;
+    phase1BarFill.style.width = `0%`;
+    phase2BarFill.style.width = `0%`;
+    phase3BarFill.style.width = `0%`;
     return;
   }
 }
