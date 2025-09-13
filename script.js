@@ -60,14 +60,15 @@ function centerCurrentXpText() {
   const container = document.querySelector('.current-xp-text');
   const input = document.getElementById('currentXp');
   const label = document.getElementById('currentXpMax');
-
+  let valueStr = currentXpInput.textContent.replace(/,/g, "");
+  const formatted = Number(valueStr || 0).toLocaleString()
   // Measure combined width of input + label
   const inputWidth = input.offsetWidth;
   const labelWidth = label.offsetWidth;
   const totalWidth = inputWidth + labelWidth;
 
   // Shift container so combined block is centered
-  container.style.transform = `translateX(-${totalWidth / 2}px) translateY(-50%)`;
+  container.style.transform = `translateX(-${totalWidth}px) translateY(-50%)`;
 }
 
 function validateCurrentXp() {
@@ -179,9 +180,12 @@ function updateDisplay() {
   let isCurrentXpValid = validateCurrentXp();
   let isCurrentGoalValid = validateGoalLevel();
 
-  if (isCurrentLevelValid && isCurrentXpValid) {
+  if (isCurrentLevelValid) {
     let currentLevel = parseInt(currentLevelInput.value);
-    let currentXp = parseInt(currentXpInput.textContent.replace(/,/g, ""));
+    let currentXp = 0
+    if (isCurrentXpValid) {
+      currentXp = parseInt(currentXpInput.textContent.replace(/,/g, ""))
+    }
     let currentTotalXp = calculateTotalXp(currentLevel, currentXp);
     if (isCurrentGoalValid) {
       let currentGoal = parseInt(goalLevelInput.value);
