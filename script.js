@@ -78,7 +78,7 @@ function validateCurrentXp() {
 
   // Remove commas and get the numeric value
   let valueStr = currentXpInput.textContent.replace(/,/g, "");
-  let value = parseInt(valueStr, 10);
+  let value = parseInt(valueStr);
 
   const maxXp = getPhaseMaxXp(parseInt(currentLevelInput.value));
 
@@ -181,7 +181,7 @@ function updateDisplay() {
 
   if (isCurrentLevelValid && isCurrentXpValid) {
     let currentLevel = parseInt(currentLevelInput.value);
-    let currentXp = Number(currentXpInput.innerText);
+    let currentXp = parseInt(currentXpInput.textContent.replace(/,/g, ""));
     let currentTotalXp = calculateTotalXp(currentLevel, currentXp);
     if (isCurrentGoalValid) {
       let currentGoal = parseInt(goalLevelInput.value);
@@ -217,6 +217,7 @@ function updateDisplay() {
 
     return;
   } else {
+    let currentLevel = parseInt(currentLevelInput.value);
     goalXpLeft.textContent = `INVALID LEVEL`;
     phase1XpLeft.textContent = `INVALID LEVEL`;
     phase2XpLeft.textContent = `INVALID LEVEL`;
